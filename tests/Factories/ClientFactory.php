@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace OpenIDConnect\Tests\Factories;
 
 use League\OAuth2\Server\Entities\ClientEntityInterface;

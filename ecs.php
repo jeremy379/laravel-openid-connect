@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\ArrayIndentSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Arrays\DisallowLongArraySyntaxSniff;
 use PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff;

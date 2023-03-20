@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace OpenIDConnect\Claims;
 
 use OpenIDConnect\Claims\Traits\WithClaims;
