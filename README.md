@@ -77,6 +77,24 @@ class IdentityEntity implements IdentityEntityInterface
 }
 ```
 
+### Client got id token
+
+- Parse it
+- Check signature
+  $config = Configuration::forSymmetricSigner(
+  new \Lcobucci\JWT\Signer\Hmac\Sha256(),
+  InMemory::file(base_path('oauth-public.key')),
+  );
+
+
+
+	$token = $config->parser()->parse($idtoken);
+
+	dump($token);
+
+
+	$x = $config->validator()->validate($token, new \Lcobucci\JWT\Validation\Constraint\SignedWith($config->signer(), $config->signingKey()));
+
 ### Publishing the config
 In case you want to change the default scopes, add custom claim sets or change the repositories, you can publish the openid config using:
 ```sh
