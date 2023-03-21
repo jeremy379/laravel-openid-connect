@@ -23,7 +23,7 @@
         "lcobucci/jwt": "^4.0",
         "league/oauth2-server": "^8.2.0",
         "laravel/passport": "^11.0",
-        "laravel/laravel": "^10.0"
+        "laravel/framework": "^10.0"
     },
     "require-dev": {
         "guzzlehttp/psr7": "^1.7",
