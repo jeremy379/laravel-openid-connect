@@ -2,59 +2,18 @@
 
 OpenID Connect support to the PHP League's OAuth2 Server.
 
-**Compatible with [Laravel Passport](https://laravel.com/docs/8.x/passport)!**
+**Compatible with [Laravel Passport](https://laravel.com/docs/10.x/passport)!**
 
 ## Requirements
 
-* Requires PHP version `^7.4|^8.0`.
+* Requires PHP version `^8.2`.
 * [lcobucci/jwt](https://github.com/lcobucci/jwt) version `^4.0`.
 * [league/oauth2-server](https://github.com/thephpleague/oauth2-server) `^8.2`.
+* Larave 10
 
 ## Installation
 ```sh
 composer require ronvanderheijden/openid-connect
-```
-
-## Keys
-
-To sign and encrypt the tokens, we need a private and a public key.
-```sh
-mkdir -m 700 -p tmp
-
-openssl genrsa -out tmp/private.key 2048
-openssl rsa -in tmp/private.key -pubout -out tmp/public.key
-
-chmod 600 tmp/private.key
-chmod 644 tmp/public.key
-```
-
-## Example
-I recommand to [read this](https://oauth2.thephpleague.com/authorization-server/auth-code-grant/) first.
-
-To enable OpenID Connect, follow these simple steps
-
-```php
-$privateKeyPath = 'tmp/private.key';
-
-// create the response_type
-$responseType = new IdTokenResponse(
-    new IdentityRepository(),
-    new ClaimExtractor(),
-    Configuration::forSymmetricSigner(
-        new Sha256(),
-        InMemory::file($privateKeyPath),
-    ),
-);
-
-$server = new \League\OAuth2\Server\AuthorizationServer(
-    $clientRepository,
-    $accessTokenRepository,
-    $scopeRepository,
-    $privateKeyPath,
-    $encryptionKey,
-    // add the response_type
-    $responseType,
-);
 ```
 
 Now when calling the `/authorize` endpoint, provide the `openid` scope to get an `id_token`.  
@@ -66,16 +25,15 @@ For a complete implementation, visit [the OAuth2 Server example](https://github.
 
 You can use this package with Laravel Passport in 2 simple steps.
 
-### 1.) add the service provider
+### 1.) Add the scope in your AuthServiceProvider
+
+You may want to combine existing scope and oauth implementation with the open ID connect.
+
 ```php
-# config/app.php
-'providers' => [
-    /*
-     * Package Service Providers...
-     */
-    OpenIDConnect\Laravel\PassportServiceProvider::class,
-],
-```
+$scopes = array_merge($yourScope, config('openid.passport.tokens_can'));
+Passport::tokensCan($scopes);
+````
+
 
 ### 2.) create an entity
 Create an entity class in `app/Entities/` named `IdentityEntity` or `UserEntity`. This entity is used to collect the claims.
