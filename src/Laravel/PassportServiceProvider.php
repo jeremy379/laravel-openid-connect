@@ -56,7 +56,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
         return new AuthorizationServer(
             app(ClientRepository::class),
             app(AccessTokenRepository::class),
-            app(config('openid.repositories.scope')),
+            app(Passport\Bridge\ScopeRepository::class),
             $cryptKey,
             app(Encrypter::class)->getKey(),
             $responseType,
