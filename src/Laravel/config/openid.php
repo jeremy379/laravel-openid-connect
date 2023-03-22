@@ -41,7 +41,6 @@ return [
 
     /**
      * The signer to be used
-     * Can be Ecdsa, Hmac or RSA
      */
-    'signer' => \Lcobucci\JWT\Signer\Hmac\Sha256::class,
+	'signer' => \Lcobucci\JWT\Signer\Rsa\Sha256::class,
 ];
