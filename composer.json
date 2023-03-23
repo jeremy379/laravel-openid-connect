@@ -1,10 +1,14 @@
 {
-    "name": "ronvanderheijden/openid-connect",
+    "name": "jeremy379/laravel-openid-connect",
     "type": "library",
     "description": "OpenID Connect support to the PHP League's OAuth2 Server. Compatible with Laravel Passport.",
     "license": "MIT",
-    "homepage": "https://github.com/ronvanderheijden/openid-connect",
+    "homepage": "https://github.com/jeremy379/laravel-openid-connect",
     "authors": [
+        {
+            "name": "Jérémy Dillenbourg",
+            "email": "jeremy@dillenbourg.be"
+        },
         {
             "name": "Ron van der Heijden",
             "email": "r.heijden@live.nl"

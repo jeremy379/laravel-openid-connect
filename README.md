@@ -2,7 +2,7 @@
 
 OpenID Connect support to the PHP League's OAuth2 Server.
 
-This is a fork of ronvanderheijden/openid-connect.
+This is a fork of [ronvanderheijden/openid-connect](https://github.com/ronvanderheijden/openid-connect).
 
 It's made to support only Laravel and laravel Passport.
 
