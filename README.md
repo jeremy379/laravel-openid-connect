@@ -17,19 +17,8 @@ It's made to support only Laravel and laravel Passport.
 
 ## Installation
 
-Add in your composer.json
-
-````json
- "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/jeremy379/openid-connect"
-        }
-    ],
-````
-
 ```sh
-composer require ronvanderheijden/openid-connect:dev-main
+composer require jeremy379/laravel-openid-connect
 ```
 
 Now when calling the `oauth/authorize` endpoint, provide the `openid` scope to get an `id_token`.  
