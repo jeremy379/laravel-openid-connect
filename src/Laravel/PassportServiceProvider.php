@@ -51,6 +51,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
                 app(config('openid.signer')),
                 InMemory::file($cryptKey->getKeyPath()),
             ),
+            config('openid.token_headers'),
         );
 
         return new AuthorizationServer(
