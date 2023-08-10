@@ -56,6 +56,7 @@ class IdTokenTest extends TestCase
         $json = json_decode($response->getBody()->getContents());
         $this->defaultTokenAsserts($json);
 
-        $this->assertObjectHasAttribute('id_token', $json);
+        $this->assertIsObject($json);
+        $this->assertTrue(property_exists($json, 'id_token'));
     }
 }

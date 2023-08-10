@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class ClaimExtractorTest extends TestCase
 {
-    public function protected_claim_sets()
+    public static function protected_claim_sets()
     {
         yield 'profile' => ['name' => 'profile'];
         yield 'email' => ['name' => 'email'];
