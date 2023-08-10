@@ -24,6 +24,6 @@ class OauthTest extends TestCase
         $this->defaultTokenAsserts($json);
 
         $this->assertIsObject($json);
-        $this->assertTrue(!property_exists($json, 'id_token'));
+        $this->assertFalse(property_exists($json, 'id_token'));
     }
 }
