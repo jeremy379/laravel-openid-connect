@@ -43,4 +43,9 @@ return [
      * The signer to be used
      */
 	'signer' => \Lcobucci\JWT\Signer\Rsa\Sha256::class,
+
+    /**
+     * Optional associative array that will be used to set headers on the JWT
+     */
+    'token_headers' => [],
 ];

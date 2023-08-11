@@ -109,6 +109,17 @@ In case you want to change the default scopes, add custom claim sets or change t
 php artisan vendor:publish --tag=openid
 ```
 
+### Optional Configuration
+You can add any JWT Token Headers that you want to the `token_headers` array in your `openid` configuration file.
+
+This can be useful to define things like the [`kid`(Key ID)](https://datatracker.ietf.org/doc/html/rfc7517#section-4.5).  The `kid` can be any string as long as it can uniquely identify the key you want to use in your [JWKS](https://datatracker.ietf.org/doc/html/rfc7517#section-5). This can be useful when changing or rolling keys.
+
+Example:
+
+```php
+'token_headers' => ['kid' => base64_encode('public-key-added-2023-01-01')]
+```
+
 ## Support
 
 You can fill an issue in the github section dedicated for that. I'll try to maintain this fork.
