@@ -22,23 +22,30 @@ class IdTokenResponse extends BearerTokenResponse
 
     private array $tokenHeaders;
 
+    private bool $useMicroseconds;
+
     public function __construct(
         IdentityRepositoryInterface $identityRepository,
         ClaimExtractor $claimExtractor,
         Configuration $config,
-        array $tokenHeaders = []
+        array $tokenHeaders = [],
+        bool $useMicroseconds = true
     ) {
         $this->identityRepository = $identityRepository;
         $this->claimExtractor = $claimExtractor;
         $this->config = $config;
         $this->tokenHeaders = $tokenHeaders;
+        $this->useMicroseconds = $useMicroseconds;
     }
 
     protected function getBuilder(
         AccessTokenEntityInterface $accessToken,
         IdentityEntityInterface $userEntity
     ): Builder {
-        $dateTimeImmutableObject = new DateTimeImmutable();
+        $dateTimeImmutableObject = DateTimeImmutable::createFromFormat(
+            ($this->useMicroseconds ? 'U.u' : 'U'),
+            time()
+        );
 
         return $this->config
             ->builder()
