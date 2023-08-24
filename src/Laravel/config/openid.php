@@ -48,4 +48,9 @@ return [
      * Optional associative array that will be used to set headers on the JWT
      */
     'token_headers' => [],
+
+    /**
+     * By default, microseconds are included.
+     */
+    'use_microseconds' => true,
 ];

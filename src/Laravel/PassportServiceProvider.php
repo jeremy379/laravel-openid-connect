@@ -52,6 +52,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
                 InMemory::file($cryptKey->getKeyPath()),
             ),
             config('openid.token_headers'),
+            config('openid.use_microseconds')
         );
 
         return new AuthorizationServer(
