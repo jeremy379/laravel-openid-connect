@@ -1,3 +1,6 @@
+
+[![PHP 8.2](https://github.com/jeremy379/laravel-openid-connect/actions/workflows/php82.yml/badge.svg)](https://github.com/jeremy379/laravel-openid-connect/actions/workflows/php82.yml)
+
 # OpenID Connect for Laravel
 
 OpenID Connect support to the PHP League's OAuth2 Server.
