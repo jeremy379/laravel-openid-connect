@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+set -eu
+
+if [ ! -f "$(pwd)/tmp/private.key" ]; then
+    mkdir -m 700 -p tmp
+
+    openssl genrsa -out tmp/private.key 2048
+    openssl rsa -in tmp/private.key -pubout -out tmp/public.key
+
+    chmod 600 tmp/private.key
+    chmod 644 tmp/public.key
+fi
