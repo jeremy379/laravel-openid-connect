@@ -44,7 +44,7 @@ class IdTokenResponse extends BearerTokenResponse
     ): Builder {
         $dateTimeImmutableObject = DateTimeImmutable::createFromFormat(
             ($this->useMicroseconds ? 'U.u' : 'U'),
-            time()
+            strval(microtime(true))
         );
 
         return $this->config
