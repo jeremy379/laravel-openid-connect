@@ -1,19 +1,18 @@
-# OpenID Connect
+# OpenID Connect for Laravel
 
 OpenID Connect support to the PHP League's OAuth2 Server.
 
 This is a fork of [ronvanderheijden/openid-connect](https://github.com/ronvanderheijden/openid-connect).
 
-It's made to support only Laravel and laravel Passport.
-
-**Compatible with [Laravel Passport](https://laravel.com/docs/10.x/passport)!**
+It's made to support only Laravel and [Laravel Passport](https://laravel.com/docs/10.x/passport).
 
 ## Requirements
 
 * Requires PHP version `^8.2`.
 * [lcobucci/jwt](https://github.com/lcobucci/jwt) version `^4.0`.
 * [league/oauth2-server](https://github.com/thephpleague/oauth2-server) `^8.2`.
-* Larave 10
+* Laravel 10
+* Laravel Passport installed and configured
 
 ## Installation
 
