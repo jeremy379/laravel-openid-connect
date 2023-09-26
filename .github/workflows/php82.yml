@@ -1,9 +1,15 @@
-name: PHP 8.2
+name: Test
 
-on: push
+on:
+  pull_request:
+    branches:
+      - "*"
+  push:
+    branches:
+      - "*"
 
 jobs:
-  php80:
+  checks:
     name: Check PHP 8.2
     runs-on: ubuntu-latest
 
@@ -11,17 +17,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        uses: php-actions/composer@v5
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: 8.2
-          args: --prefer-dist --ignore-platform-reqs
+          php-version: '8.2'
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --ignore-platform-reqs --no-interaction
 
       - name: Check code styling
         run: composer ecs-check
 
       - name: Create keys
-        run: ./bin/create_keys
+        run: sh ./bin/create_keys
 
       - name: Run unit and feature tests
         run: composer test
