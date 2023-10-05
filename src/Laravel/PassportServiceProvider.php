@@ -49,7 +49,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
             new ClaimExtractor(...$claimSets),
             Configuration::forSymmetricSigner(
                 app(config('openid.signer')),
-                InMemory::file($cryptKey->getKeyPath()),
+                InMemory::plainText($cryptKey->getKeyContents(), $cryptKey->getPassPhrase() ?? '')
             ),
             config('openid.token_headers'),
             config('openid.use_microseconds')
