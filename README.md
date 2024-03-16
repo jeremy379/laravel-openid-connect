@@ -14,7 +14,7 @@ It's made to support only Laravel and [Laravel Passport](https://laravel.com/doc
 * Requires PHP version `^8.2`.
 * [lcobucci/jwt](https://github.com/lcobucci/jwt) version `^4.0`.
 * [league/oauth2-server](https://github.com/thephpleague/oauth2-server) `^8.2`.
-* Laravel 10
+* Laravel 10 or Laravel 11
 * Laravel Passport installed and configured
 
 ## Installation
