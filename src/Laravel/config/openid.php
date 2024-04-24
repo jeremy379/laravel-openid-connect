@@ -39,6 +39,19 @@ return [
         'identity' => \OpenIDConnect\Repositories\IdentityRepository::class,
     ],
 
+    'routes' => [
+        /**
+         * When set to true, this package will expose the OpenID Connect Discovery endpoint.
+         *  - /.well-known/openid-configuration
+         */
+        'discovery' => true,
+        /**
+         * When set to true, this package will expose the JSON Web Key Set endpoint.
+         * - /oauth/jwks
+         */
+        'jwks' => true,
+    ],
+
     /**
      * The signer to be used
      */
