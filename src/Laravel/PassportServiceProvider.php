@@ -32,6 +32,8 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
         $this->publishes([
             __DIR__ . '/config/openid.php' => $this->app->configPath('openid.php'),
         ], ['openid', 'openid-config']);
+
+        $this->loadRoutesFrom(__DIR__."/routes/web.php");
     }
 
     public function makeAuthorizationServer(): AuthorizationServer
