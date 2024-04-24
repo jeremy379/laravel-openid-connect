@@ -2,7 +2,6 @@
 
 namespace OpenIDConnect\Laravel;
 
-use Illuminate\Config\Repository as Config;
 use Laravel\Passport\Passport;
 
 class JwksController
