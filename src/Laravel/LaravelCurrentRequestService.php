@@ -9,7 +9,6 @@ use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 class LaravelCurrentRequestService implements CurrentRequestServiceInterface
 {
-
     public function getRequest(): ServerRequestInterface
     {
         return (new PsrHttpFactory(
