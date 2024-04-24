@@ -6,19 +6,23 @@ use DateInterval;
 use DateTimeImmutable;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Configuration;
+use League\OAuth2\Server\CryptTrait;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
+use OpenIDConnect\Interfaces\CurrentRequestServiceInterface;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 use OpenIDConnect\Interfaces\IdentityRepositoryInterface;
 
-class IdTokenResponse extends BearerTokenResponse
-{
+class IdTokenResponse extends BearerTokenResponse {
+    use CryptTrait;
+
     protected IdentityRepositoryInterface $identityRepository;
 
     protected ClaimExtractor $claimExtractor;
 
     private Configuration $config;
+    private ?CurrentRequestServiceInterface $currentRequestService;
 
     private array $tokenHeaders;
 
@@ -29,13 +33,17 @@ class IdTokenResponse extends BearerTokenResponse
         ClaimExtractor $claimExtractor,
         Configuration $config,
         array $tokenHeaders = [],
-        bool $useMicroseconds = true
+        bool $useMicroseconds = true,
+        CurrentRequestServiceInterface $currentRequestService = null,
+        $encryptionKey = null,
     ) {
         $this->identityRepository = $identityRepository;
         $this->claimExtractor = $claimExtractor;
         $this->config = $config;
         $this->tokenHeaders = $tokenHeaders;
         $this->useMicroseconds = $useMicroseconds;
+        $this->currentRequestService = $currentRequestService;
+        $this->encryptionKey = $encryptionKey;
     }
 
     protected function getBuilder(
@@ -47,17 +55,23 @@ class IdTokenResponse extends BearerTokenResponse
             ($this->useMicroseconds ? microtime(true) : time())
         );
 
+        if ($this->currentRequestService) {
+            $uri = $this->currentRequestService->getRequest()->getUri();
+            $issuer = $uri->getScheme() . '://' . $uri->getHost() . ($uri->getPort() ? ':' . $uri->getPort() : '');
+        } else {
+            $issuer = 'https://' . $_SERVER['HTTP_HOST'];
+        }
+
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy('https://' . $_SERVER['HTTP_HOST'])
+            ->issuedBy($issuer)
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());
     }
 
-    protected function getExtraParams(AccessTokenEntityInterface $accessToken): array
-    {
+    protected function getExtraParams(AccessTokenEntityInterface $accessToken): array {
         if (!$this->hasOpenIDScope(...$accessToken->getScopes())) {
             return [];
         }
@@ -70,6 +84,17 @@ class IdTokenResponse extends BearerTokenResponse
 
         foreach ($this->tokenHeaders as $key => $value) {
             $builder = $builder->withHeader($key, $value);
+        }
+
+        if ($this->currentRequestService) {
+            // If the request contains a code, we look into the code to find the nonce.
+            $body = $this->currentRequestService->getRequest()->getParsedBody();
+            if (isset($body['code'])) {
+                $authCodePayload = json_decode($this->decrypt($body['code']), true, 512, JSON_THROW_ON_ERROR);
+                if (isset($authCodePayload['nonce'])) {
+                    $builder = $builder->withClaim('nonce', $authCodePayload['nonce']);
+                }
+            }
         }
 
         $claims = $this->claimExtractor->extract(
@@ -89,8 +114,7 @@ class IdTokenResponse extends BearerTokenResponse
         return ['id_token' => $token->toString()];
     }
 
-    private function hasOpenIDScope(ScopeEntityInterface ...$scopes): bool
-    {
+    private function hasOpenIDScope(ScopeEntityInterface ...$scopes): bool {
         foreach ($scopes as $scope) {
             if ($scope->getIdentifier() === 'openid') {
                 return true;
