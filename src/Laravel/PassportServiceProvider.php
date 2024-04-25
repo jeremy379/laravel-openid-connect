@@ -9,8 +9,10 @@ use Laravel\Passport\Bridge\ClientRepository;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use League\OAuth2\Server\AuthorizationServer;
+use Nyholm\Psr7\Response;
 use OpenIDConnect\ClaimExtractor;
 use OpenIDConnect\Claims\ClaimSet;
+use OpenIDConnect\Grant\AuthCodeGrant;
 use OpenIDConnect\IdTokenResponse;
 
 class PassportServiceProvider extends Passport\PassportServiceProvider
@@ -34,11 +36,14 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
         ], ['openid', 'openid-config']);
 
         $this->loadRoutesFrom(__DIR__."/routes/web.php");
+
+        $this->registerClaimExtractor();
     }
 
     public function makeAuthorizationServer(): AuthorizationServer
     {
         $cryptKey = $this->makeCryptKey('private');
+        $encryptionKey = app(Encrypter::class)->getKey();
 
         $customClaimSets = config('openid.custom_claim_sets');
 
@@ -54,7 +59,9 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
                 InMemory::plainText($cryptKey->getKeyContents(), $cryptKey->getPassPhrase() ?? '')
             ),
             config('openid.token_headers'),
-            config('openid.use_microseconds')
+            config('openid.use_microseconds'),
+            app(LaravelCurrentRequestService::class),
+            $encryptionKey,
         );
 
         return new AuthorizationServer(
@@ -62,8 +69,36 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
             app(AccessTokenRepository::class),
             app(Passport\Bridge\ScopeRepository::class),
             $cryptKey,
-            app(Encrypter::class)->getKey(),
+            $encryptionKey,
             $responseType,
         );
+    }
+
+     /**
+     * Build the Auth Code grant instance.
+     *
+     * @return AuthCodeGrant
+     */
+    protected function buildAuthCodeGrant()
+    {
+        return new AuthCodeGrant(
+            $this->app->make(Passport\Bridge\AuthCodeRepository::class),
+            $this->app->make(Passport\Bridge\RefreshTokenRepository::class),
+            new \DateInterval('PT10M'),
+            new Response(),
+            $this->app->make(LaravelCurrentRequestService::class),
+        );
+    }
+
+    public function registerClaimExtractor() {
+        $this->app->singleton(ClaimExtractor::class, function () {
+            $customClaimSets = config('openid.custom_claim_sets');
+
+            $claimSets = array_map(function ($claimSet, $name) {
+                return new ClaimSet($name, $claimSet);
+            }, $customClaimSets, array_keys($customClaimSets));
+
+            return new ClaimExtractor(...$claimSets);
+        });
     }
 }
