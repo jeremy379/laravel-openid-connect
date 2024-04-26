@@ -78,9 +78,13 @@ class IdTokenResponse extends BearerTokenResponse {
          *
          *  The value of the scope parameter is expressed as a list of space-delimited, case-sensitive strings.
          */
-        $params = ['scope' => implode(' ', $accessToken->getScopes())];
+        $scopes = $accessToken->getScopes();
 
-        if (!$this->hasOpenIDScope(...$accessToken->getScopes())) {
+        $params = ['scope' => implode(' ', array_map(function ($value) {
+            return $value->getIdentifier();
+        }, $scopes))];
+
+        if (!$this->hasOpenIDScope(...$scopes)) {
             return $params;
         }
 
@@ -106,7 +110,7 @@ class IdTokenResponse extends BearerTokenResponse {
         }
 
         $claims = $this->claimExtractor->extract(
-            $accessToken->getScopes(),
+            $scopes,
             $user->getClaims(),
         );
 
