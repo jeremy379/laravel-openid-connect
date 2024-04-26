@@ -122,6 +122,8 @@ Example:
 'token_headers' => ['kid' => base64_encode('public-key-added-2023-01-01')]
 ```
 
+Additionally, you can configure the JWKS url and some settings for discovery in the config file.
+
 ## Support
 
 You can fill an issue in the github section dedicated for that. I'll try to maintain this fork.
