@@ -96,8 +96,12 @@ class DiscoveryController
          */
         $response_types = [
             'code',
-            'id_token',
-            'code id_token',
+            /**
+             * Passport does not actually support `code id_token` or `id_token` and
+             * we return the ID token regardless on all requests.
+             *
+             * This doesn't form a problem however, even the OIDC spec doesn't do this correctly.
+             */
         ];
 
         if (Passport::$implicitGrantEnabled) {
@@ -105,10 +109,10 @@ class DiscoveryController
              * Return all variants, indicating both Auth Code & implicit are allowed
              */
             return array_merge($response_types, [
-                'token',
-                'code token',
-                'token id_token',
-                'code token id_token',
+                'token'
+                /**
+                 * Passport doesn't support `code token` either.
+                 */
             ]);
         }
 
