@@ -72,8 +72,16 @@ class IdTokenResponse extends BearerTokenResponse {
     }
 
     protected function getExtraParams(AccessTokenEntityInterface $accessToken): array {
+        /**
+         * Include the scope return value, which according to RFC 6749, section 5.1 (and 3.3)
+         * is also required if the scope doesn't match the requested scope, which it might, and is optional otherwise.
+         *
+         *  The value of the scope parameter is expressed as a list of space-delimited, case-sensitive strings.
+         */
+        $params = ['scope' => implode(' ', $accessToken->getScopes())];
+
         if (!$this->hasOpenIDScope(...$accessToken->getScopes())) {
-            return [];
+            return $params;
         }
 
         $user = $this->identityRepository->getByIdentifier(
@@ -111,7 +119,7 @@ class IdTokenResponse extends BearerTokenResponse {
             $this->config->signingKey(),
         );
 
-        return ['id_token' => $token->toString()];
+        return array_merge($params, ['id_token' => $token->toString()]);
     }
 
     private function hasOpenIDScope(ScopeEntityInterface ...$scopes): bool {
