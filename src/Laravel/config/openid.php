@@ -57,6 +57,17 @@ return [
     ],
 
     /**
+     * Settings for the discovery endpoint
+     */
+    'discovery' => [
+        /**
+        * Hide scopes that aren't from the OpenID Core spec from the Discovery,
+        * default = false (all scopes are listed)
+        */
+        'hide_scopes' => false,
+    ]
+
+    /**
      * The signer to be used
      */
 	'signer' => \Lcobucci\JWT\Signer\Rsa\Sha256::class,
@@ -70,10 +81,4 @@ return [
      * By default, microseconds are included.
      */
     'use_microseconds' => true,
-
-    /**
-     * Hide scopes that aren't from the OpenID Core spec from the Discovery,
-     * default = false (all scopes are listed)
-     */
-    'hide_scopes' => false,
 ];

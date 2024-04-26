@@ -52,7 +52,7 @@ class DiscoveryController
     private function getSupportedScopes(): array {
         $scopes = array_keys(config('openid.passport.tokens_can'));
 
-        if (!config('openid.hide_scopes', false)) {
+        if (!config('openid.discovery.hide_scopes', false)) {
             return $scopes;
         }
 
