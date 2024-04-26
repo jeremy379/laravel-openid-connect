@@ -70,4 +70,10 @@ return [
      * By default, microseconds are included.
      */
     'use_microseconds' => true,
+
+    /**
+     * Hide scopes that aren't from the OpenID Core spec from the Discovery,
+     * default = false (all scopes are listed)
+     */
+    'hide_scopes' => false,
 ];
