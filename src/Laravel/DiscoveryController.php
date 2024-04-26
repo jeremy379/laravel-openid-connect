@@ -45,7 +45,8 @@ class DiscoveryController
 
     /**
      * Returns JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that this server supports.
-     * The server MUST support the openid scope value. Servers MAY choose not to advertise some supported scope values even when this parameter is used,
+     * The server MUST support the openid scope value. 
+     * Servers MAY choose not to advertise some supported scope values even when this parameter is used,
      * although those defined in [OpenID.Core] SHOULD be listed, if supported.
      */
     private function getSupportedScopes(): array {
