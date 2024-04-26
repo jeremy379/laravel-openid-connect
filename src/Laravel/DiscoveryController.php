@@ -97,12 +97,6 @@ class DiscoveryController
          */
         $response_types = [
             'code',
-            /**
-             * Passport does not actually support `code id_token` or `id_token` and
-             * we return the ID token regardless on all requests.
-             *
-             * This doesn't form a problem however, even the OIDC spec doesn't do this correctly.
-             */
         ];
 
         if (Passport::$implicitGrantEnabled) {
@@ -112,8 +106,10 @@ class DiscoveryController
             return array_merge($response_types, [
                 'token',
                 /**
-                 * Passport doesn't support `code token` either.
-                 */
+                * TODO: Allow `id_token`, `id_token token`, `code id_token`, `code token`, `code id_token token`
+                * if we build the Implict Flow path.
+                * See https://github.com/jeremy379/laravel-openid-connect/issues/6
+                */
             ]);
         }
 
