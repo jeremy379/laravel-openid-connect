@@ -13,7 +13,6 @@ class DiscoveryController
             'issuer' => url('/'),
             'authorization_endpoint' => route('passport.authorizations.authorize'),
             'token_endpoint' => route('passport.token'),
-            'jwks_uri' => route('openid.jwks'),
             'response_types_supported' => [
                 'code',
                 'token',
@@ -39,6 +38,10 @@ class DiscoveryController
 
         if (Route::has('openid.userinfo')) {
             $response['userinfo_endpoint'] = route('openid.userinfo');
+        }
+
+        if (Route::has('openid.jwks')) {
+            $response['jwks_uri'] = route('openid.jwks');
         }
 
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);

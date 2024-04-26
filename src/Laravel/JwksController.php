@@ -15,7 +15,9 @@ class JwksController
         $jsonData = [
             'keys' => [
                 [
+                    'alg' => 'RS256',
                     'kty' => 'RSA',
+                    'use' => 'sig',
                     'n' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['n'])), '='),
                     'e' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['e'])), '='),
                 ],
