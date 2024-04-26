@@ -80,9 +80,11 @@ class IdTokenResponse extends BearerTokenResponse {
          */
         $scopes = $accessToken->getScopes();
 
-        $params = ['scope' => implode(' ', array_map(function ($value) {
-            return $value->getIdentifier();
-        }, $scopes))];
+        $params = [
+            'scope' => implode(' ', array_map(function ($value) {
+                return $value->getIdentifier();
+            }, $scopes)),
+        ];
 
         if (!$this->hasOpenIDScope(...$scopes)) {
             return $params;
