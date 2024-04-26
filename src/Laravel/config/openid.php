@@ -47,9 +47,13 @@ return [
         'discovery' => true,
         /**
          * When set to true, this package will expose the JSON Web Key Set endpoint.
-         * - /oauth/jwks
          */
         'jwks' => true,
+         /**
+          * Optional URL to change the JWKS path to align with your custom Passport routes.
+          * Defaults to /oauth/jwks
+          */
+        'jwks_url' => '/oauth/jwks',
     ],
 
     /**
