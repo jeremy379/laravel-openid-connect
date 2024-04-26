@@ -65,7 +65,7 @@ return [
         * default = false (all scopes are listed)
         */
         'hide_scopes' => false,
-    ]
+    ],
 
     /**
      * The signer to be used
