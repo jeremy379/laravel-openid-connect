@@ -63,7 +63,7 @@ class DiscoveryController
             'profile',
             'email',
             'address',
-            'phone'
+            'phone',
         ]);
     }
 
@@ -109,7 +109,7 @@ class DiscoveryController
              * Return all variants, indicating both Auth Code & implicit are allowed
              */
             return array_merge($response_types, [
-                'token'
+                'token',
                 /**
                  * Passport doesn't support `code token` either.
                  */
