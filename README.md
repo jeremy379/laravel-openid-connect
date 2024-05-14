@@ -124,6 +124,8 @@ Example:
 
 Additionally, you can configure the JWKS url and some settings for discovery in the config file.
 
+_Note: If you define a `kid` header, it will be added to the JWK returned at the jwks_url (if `jwks` is enabled in the configuration)._
+
 ## Support
 
 You can fill an issue in the github section dedicated for that. I'll try to maintain this fork.
