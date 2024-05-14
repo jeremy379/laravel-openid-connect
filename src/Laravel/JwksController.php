@@ -12,15 +12,22 @@ class JwksController
         // Source: https://www.tuxed.net/fkooman/blog/json_web_key_set.html
         $keyInfo = openssl_pkey_get_details(openssl_pkey_get_public($publicKey));
 
+        $passportJWK = [
+            'alg' => 'RS256',
+            'kty' => 'RSA',
+            'use' => 'sig',
+            'n' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['n'])), '='),
+            'e' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['e'])), '='),
+        ];
+
+        // Adds the kid if it is set in the config's token_headers
+        if ($kid = config('openid.token_headers.kid', false)) {
+            $passportJWK['kid'] = $kid;
+        }
+
         $jsonData = [
             'keys' => [
-                [
-                    'alg' => 'RS256',
-                    'kty' => 'RSA',
-                    'use' => 'sig',
-                    'n' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['n'])), '='),
-                    'e' => rtrim(str_replace(['+', '/'], ['-', '_'], base64_encode($keyInfo['rsa']['e'])), '='),
-                ],
+                $passportJWK,
             ],
         ];
 
