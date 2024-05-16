@@ -88,6 +88,15 @@ class IdentityEntity implements IdentityEntityInterface
 }
 ```
 
+### 3.)  Update authorization view
+
+Ensure the `nonce` is passed as query parameter to `passport.authorizations.approve`.
+
+Example based on default Passport's `authorize.blade.php`:
+```
+<form method="post" action="{{ route('passport.authorizations.approve').'?nonce='.$request->nonce }}">
+```
+
 ### The id token is a JWT and the client should verify the signature.
 
 Here is an example to verify the signature with lcobucci/jwt
