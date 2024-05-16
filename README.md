@@ -111,6 +111,15 @@ In case you want to change the default scopes, add custom claim sets or change t
 php artisan vendor:publish --tag=openid
 ```
 
+### Using nonce
+
+When `nonce` is required, you need to pass it as a query parameter to `passport.authorizations.approve` during authorization step.
+
+Example based on default Passport's `authorize.blade.php`:
+```
+<form method="post" action="{{ route('passport.authorizations.approve').'?nonce='.$request->nonce }}">
+```
+
 ### Optional Configuration
 You can add any JWT Token Headers that you want to the `token_headers` array in your `openid` configuration file.
 
