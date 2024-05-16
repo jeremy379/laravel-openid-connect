@@ -88,15 +88,6 @@ class IdentityEntity implements IdentityEntityInterface
 }
 ```
 
-### 3.)  Update authorization view
-
-Ensure the `nonce` is passed as query parameter to `passport.authorizations.approve`.
-
-Example based on default Passport's `authorize.blade.php`:
-```
-<form method="post" action="{{ route('passport.authorizations.approve').'?nonce='.$request->nonce }}">
-```
-
 ### The id token is a JWT and the client should verify the signature.
 
 Here is an example to verify the signature with lcobucci/jwt
@@ -118,6 +109,15 @@ Here is an example to verify the signature with lcobucci/jwt
 In case you want to change the default scopes, add custom claim sets or change the repositories, you can publish the openid config using:
 ```sh
 php artisan vendor:publish --tag=openid
+```
+
+### Using nonce
+
+When `nonce` is required, you need to pass it as a query parameter to `passport.authorizations.approve` during authorization step.
+
+Example based on default Passport's `authorize.blade.php`:
+```
+<form method="post" action="{{ route('passport.authorizations.approve').'?nonce='.$request->nonce }}">
 ```
 
 ### Optional Configuration
