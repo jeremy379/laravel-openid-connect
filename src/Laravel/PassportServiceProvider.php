@@ -43,7 +43,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
     public function makeAuthorizationServer(): AuthorizationServer
     {
         $cryptKey = $this->makeCryptKey('private');
-        $encryptionKey = app(Encrypter::class)->getKey();
+        $encryptionKey = $this->getEncryptionKey(app(Encrypter::class)->getKey());
 
         $customClaimSets = config('openid.custom_claim_sets');
 
@@ -74,7 +74,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
         );
     }
 
-     /**
+    /**
      * Build the Auth Code grant instance.
      *
      * @return AuthCodeGrant
@@ -88,6 +88,22 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
             new Response(),
             $this->app->make(LaravelCurrentRequestService::class),
         );
+    }
+
+    /**
+     * Get encryption key as string or a Key instance
+     *
+     * Based on https://github.com/laravel/passport/pull/820
+     *
+     * @param string $keyBytes Encryption key as string
+     *
+     * @return \Defuse\Crypto\Key|string
+     */
+    protected function getEncryptionKey($keyBytes)
+    {
+        // For BC reasons we return string, but implementations can override this method to return an object.
+        // As mentioned in https://github.com/laravel/passport/pull/820 it gives better performance.
+        return $keyBytes;
     }
 
     public function registerClaimExtractor() {
