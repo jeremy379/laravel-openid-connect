@@ -58,7 +58,7 @@ class IdTokenResponse extends BearerTokenResponse {
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy(url('/'))
+            ->issuedBy('https://' . $_SERVER['HTTP_HOST'])
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());
