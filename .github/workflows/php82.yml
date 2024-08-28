@@ -23,7 +23,7 @@ jobs:
           php-version: '8.2'
 
       - name: Install Dependencies
-        run: composer install --prefer-dist --ignore-platform-reqs --no-interaction
+        run: composer install --prefer-dist --no-interaction
 
       - name: Check code styling
         run: composer ecs-check
