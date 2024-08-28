@@ -55,17 +55,10 @@ class IdTokenResponse extends BearerTokenResponse {
             ($this->useMicroseconds ? microtime(true) : time())
         );
 
-        if ($this->currentRequestService) {
-            $uri = $this->currentRequestService->getRequest()->getUri();
-            $issuer = $uri->getScheme() . '://' . $uri->getHost() . ($uri->getPort() ? ':' . $uri->getPort() : '');
-        } else {
-            $issuer = 'https://' . $_SERVER['HTTP_HOST'];
-        }
-
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy($issuer)
+            ->issuedBy(url('/'))
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());
