@@ -4,6 +4,7 @@ namespace OpenIDConnect\Laravel;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Laravel\Passport\Passport;
 
 class DiscoveryController
@@ -13,10 +14,12 @@ class DiscoveryController
      */
     public function __invoke(Request $request)
     {
+        URL::forceScheme('https'); // for route() calls below
+
         $response = [
             'issuer' => 'https://' . $_SERVER['HTTP_HOST'],
             'authorization_endpoint' => route('passport.authorizations.authorize'),
-            'token_endpoint' => str_replace('http://', 'https://', route('passport.token')),
+            'token_endpoint' => route('passport.token'),
             'grant_types_supported' => $this->getSupportedGrantTypes(),
             'response_types_supported' => $this->getSupportedResponseTypes(),
             'subject_types_supported' => [
@@ -33,15 +36,15 @@ class DiscoveryController
         ];
 
         if (Route::has('openid.userinfo')) {
-            $response['userinfo_endpoint'] = str_replace('http://', 'https://', route('openid.userinfo'));
+            $response['userinfo_endpoint'] = route('openid.userinfo');
         }
 
         if (Route::has('openid.jwks')) {
-            $response['jwks_uri'] = str_replace('http://', 'https://', route('openid.jwks'));
+            $response['jwks_uri'] = route('openid.jwks');
         }
 
         if (Route::has('openid.end_session_endpoint')) {
-            $response['end_session_endpoint'] = str_replace('http://', 'https://', route('openid.end_session_endpoint'));
+            $response['end_session_endpoint'] = route('openid.end_session_endpoint');
         }
 
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
