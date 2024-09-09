@@ -12,9 +12,11 @@ class IdentityEntity implements IdentityEntityInterface
     use WithClaims;
 
     /**
+     * @param string[] $scopes Optional scope filter
+     *
      * @return string[]
      */
-    public function getClaims(): array
+    public function getClaims(array $scopes = []): array
     {
         /**
          * For a complete list of default claim sets
