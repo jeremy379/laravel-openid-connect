@@ -4,6 +4,7 @@ namespace OpenIDConnect\Laravel;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 use Laravel\Passport\Passport;
 
 class DiscoveryController
@@ -13,8 +14,10 @@ class DiscoveryController
      */
     public function __invoke(Request $request)
     {
+        URL::forceScheme('https'); // for route() calls below
+
         $response = [
-            'issuer' => url('/'),
+            'issuer' => 'https://' . $_SERVER['HTTP_HOST'],
             'authorization_endpoint' => route('passport.authorizations.authorize'),
             'token_endpoint' => route('passport.token'),
             'grant_types_supported' => $this->getSupportedGrantTypes(),
