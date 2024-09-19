@@ -10,11 +10,9 @@ trait WithClaims
     protected array $claims;
 
     /**
-     * @param string[] $scopes Optional scope filter
-     *
      * @return string[]
      */
-    public function getClaims(array $scopes = []): array
+    public function getClaims(): array
     {
         return $this->claims;
     }
