@@ -113,7 +113,7 @@ class IdTokenResponse extends BearerTokenResponse {
 
         $claims = $this->claimExtractor->extract(
             $scopes,
-            $user->getClaims(explode(' ', $params['scope'])),
+            $user->getClaims(),
         );
 
         foreach ($claims as $claimName => $claimValue) {
