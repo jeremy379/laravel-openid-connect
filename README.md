@@ -28,6 +28,10 @@ Provide more scopes (e.g. `openid profile email`) to receive additional claims i
 
 The id_token will be returned after the call to the `oauth/token` endpoint. 
 
+### Laravel 11
+
+On Laravel 11 you may need to register the package: https://github.com/jeremy379/laravel-openid-connect/issues/31 
+
 ## Configuration
 
 ### 1.) Add the scope in your AuthServiceProvider in boot() method.
