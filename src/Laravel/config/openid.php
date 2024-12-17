@@ -83,9 +83,9 @@ return [
     'use_microseconds' => true,
 
     /**
-     * Value for the issuedBy params. By default: auto-detect to get the scheme and host from the $_SERVER variable.
-     * Use "laravel-url" to use url('/') and let laravel decide
-     * Use any other string for direct use of it.
+     * Value for the issuedBy params. By default: laravel to get the scheme and host from the $_SERVER variable.
+     * Options: laravel (use Request to extract scheme and host), server (use $_SERVER to detect)
+     * or another string that will be used as-is
      */
-    'issuedBy' => 'auto-detect',
+    'issuedBy' => 'laravel',
 ];

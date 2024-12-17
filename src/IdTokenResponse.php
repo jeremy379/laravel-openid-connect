@@ -13,19 +13,16 @@ use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use OpenIDConnect\Interfaces\CurrentRequestServiceInterface;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 use OpenIDConnect\Interfaces\IdentityRepositoryInterface;
+use OpenIDConnect\Services\IssuedByGetter;
 
 class IdTokenResponse extends BearerTokenResponse {
     use CryptTrait;
 
     protected IdentityRepositoryInterface $identityRepository;
-
     protected ClaimExtractor $claimExtractor;
-
     private Configuration $config;
     private ?CurrentRequestServiceInterface $currentRequestService;
-
     private array $tokenHeaders;
-
     private bool $useMicroseconds;
 
     public function __construct(
@@ -36,7 +33,7 @@ class IdTokenResponse extends BearerTokenResponse {
         bool $useMicroseconds = true,
         CurrentRequestServiceInterface $currentRequestService = null,
         $encryptionKey = null,
-        protected ?string $issuedBy = null
+        protected string $issuedByConfigured = 'laravel',
     ) {
         $this->identityRepository = $identityRepository;
         $this->claimExtractor = $claimExtractor;
@@ -59,33 +56,10 @@ class IdTokenResponse extends BearerTokenResponse {
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy($this->getIssuedBy())
+            ->issuedBy(IssuedByGetter::get($this->currentRequestService, $this->issuedByConfigured))
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());
-    }
-
-    private function getIssuedBy(): string
-    {
-        if($this->issuedBy === 'laravel-url') {
-            return url('/');
-        } elseif($this->issuedBy === null || $this->issuedBy === 'auto-detect') {
-            $host = $_SERVER['HTTP_HOST'] ?? null;
-
-            if (empty($host)) {
-                return url('/');
-            }
-
-            $scheme = $_SERVER['REQUEST_SCHEME'] ?? null;
-
-            if (empty($scheme)) {
-                $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
-            }
-
-            return $scheme . '://' . $host;
-        } else {
-            return $this->issuedBy;
-        }
     }
 
     protected function getExtraParams(AccessTokenEntityInterface $accessToken): array {
