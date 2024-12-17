@@ -47,6 +47,8 @@ class IdTokenResponse extends BearerTokenResponse {
         $this->encryptionKey = $encryptionKey;
     }
 
+
+
     protected function getBuilder(
         AccessTokenEntityInterface $accessToken,
         IdentityEntityInterface $userEntity
