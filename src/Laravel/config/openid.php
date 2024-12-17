@@ -81,4 +81,11 @@ return [
      * By default, microseconds are included.
      */
     'use_microseconds' => true,
+
+    /**
+     * Value for the issueBy params. By default: auto-detect to get the scheme and host from the $_SERVER variable.
+     * Use "laravel-url" to use url('/') and let laravel decide
+     * Use any other string for direct use of it.
+     */
+    'issueBy' => 'auto-detect',
 ];

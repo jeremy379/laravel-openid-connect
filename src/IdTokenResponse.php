@@ -36,6 +36,7 @@ class IdTokenResponse extends BearerTokenResponse {
         bool $useMicroseconds = true,
         CurrentRequestServiceInterface $currentRequestService = null,
         $encryptionKey = null,
+        protected ?string $issueBy = null
     ) {
         $this->identityRepository = $identityRepository;
         $this->claimExtractor = $claimExtractor;
@@ -58,10 +59,33 @@ class IdTokenResponse extends BearerTokenResponse {
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy('https://' . $_SERVER['HTTP_HOST'])
+            ->issuedBy($this->getIssueBy())
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());
+    }
+
+    private function getIssueBy(): string
+    {
+        if($this->issueBy === 'laravel-url') {
+            return url('/');
+        } elseif($this->issueBy === null || $this->issueBy === 'auto-detect') {
+            $host = $_SERVER['HTTP_HOST'] ?? null;
+
+            if (empty($host)) {
+                return url('/');
+            }
+
+            $scheme = $_SERVER['REQUEST_SCHEME'] ?? null;
+
+            if (empty($scheme)) {
+                $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            }
+
+            return $scheme . '://' . $host;
+        } else {
+            return $this->issueBy;
+        }
     }
 
     protected function getExtraParams(AccessTokenEntityInterface $accessToken): array {
