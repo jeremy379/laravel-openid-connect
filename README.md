@@ -139,5 +139,7 @@ _Note: If you define a `kid` header, it will be added to the JWK returned at the
 
 You can fill an issue in the github section dedicated for that. I'll try to maintain this fork.
 
+Are you actively using this package and wanna help too? Reach out to me, I'm looking for help to maintain this package.
+
 ## License
 OpenID Connect is open source and licensed under [the MIT licence](https://github.com/ronvanderheijden/openid-connect/blob/master/LICENSE.txt).
