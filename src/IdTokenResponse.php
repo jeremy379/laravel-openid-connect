@@ -36,7 +36,7 @@ class IdTokenResponse extends BearerTokenResponse {
         bool $useMicroseconds = true,
         CurrentRequestServiceInterface $currentRequestService = null,
         $encryptionKey = null,
-        protected ?string $issueBy = null
+        protected ?string $issuedBy = null
     ) {
         $this->identityRepository = $identityRepository;
         $this->claimExtractor = $claimExtractor;
@@ -46,8 +46,6 @@ class IdTokenResponse extends BearerTokenResponse {
         $this->currentRequestService = $currentRequestService;
         $this->encryptionKey = $encryptionKey;
     }
-
-
 
     protected function getBuilder(
         AccessTokenEntityInterface $accessToken,
@@ -61,17 +59,17 @@ class IdTokenResponse extends BearerTokenResponse {
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy($this->getIssueBy())
+            ->issuedBy($this->getIssuedBy())
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());
     }
 
-    private function getIssueBy(): string
+    private function getIssuedBy(): string
     {
-        if($this->issueBy === 'laravel-url') {
+        if($this->issuedBy === 'laravel-url') {
             return url('/');
-        } elseif($this->issueBy === null || $this->issueBy === 'auto-detect') {
+        } elseif($this->issuedBy === null || $this->issuedBy === 'auto-detect') {
             $host = $_SERVER['HTTP_HOST'] ?? null;
 
             if (empty($host)) {
@@ -86,7 +84,7 @@ class IdTokenResponse extends BearerTokenResponse {
 
             return $scheme . '://' . $host;
         } else {
-            return $this->issueBy;
+            return $this->issuedBy;
         }
     }
 
