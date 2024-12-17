@@ -62,6 +62,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
             config('openid.use_microseconds'),
             app(LaravelCurrentRequestService::class),
             $encryptionKey,
+            config('openid.issuedBy', 'laravel')
         );
 
         return new AuthorizationServer(

@@ -6,18 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Laravel\Passport\Passport;
+use OpenIDConnect\Services\IssuedByGetter;
 
 class DiscoveryController
 {
     /**
      * Compatible with https://openid.net/specs/openid-connect-discovery-1_0.html, chapter 3
      */
-    public function __invoke(Request $request)
+    public function __invoke(Request $request, LaravelCurrentRequestService $currentRequestService)
     {
         URL::forceScheme('https'); // for route() calls below
 
         $response = [
-            'issuer' => 'https://' . $_SERVER['HTTP_HOST'],
+            'issuer' => IssuedByGetter::get($currentRequestService, config('openid.issuedBy', 'laravel')),
             'authorization_endpoint' => route('passport.authorizations.authorize'),
             'token_endpoint' => route('passport.token'),
             'grant_types_supported' => $this->getSupportedGrantTypes(),
@@ -52,7 +53,7 @@ class DiscoveryController
 
     /**
      * Returns JSON array containing a list of the OAuth 2.0 [RFC6749] scope values that this server supports.
-     * The server MUST support the openid scope value. 
+     * The server MUST support the openid scope value.
      * Servers MAY choose not to advertise some supported scope values even when this parameter is used,
      * although those defined in [OpenID.Core] SHOULD be listed, if supported.
      */

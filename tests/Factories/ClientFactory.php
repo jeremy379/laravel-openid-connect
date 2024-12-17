@@ -13,7 +13,7 @@ class ClientFactory
         $client = new ClientEntity();
         $client->setIdentifier($identifier ?? Config::CLIENT_ID);
         $client->setName('a_third_party_client');
-        $client->setRedirectUri('https://' . Config::HTTP_HOST . '/');
+        $client->setRedirectUri(Config::REQUEST_SCHEME . '://' . Config::HTTP_HOST . '/');
         $client->setConfidential();
 
         return $client;

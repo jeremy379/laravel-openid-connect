@@ -10,6 +10,11 @@ class Config
     public const HTTP_HOST = 'example.com';
 
     /**
+     * The $_SERVER['REQUEST_SCHEME'] variable is not set form CLI, so we add it
+     */
+    public const REQUEST_SCHEME = 'https';
+
+    /**
      * An ID for the third party client
      */
     public const CLIENT_ID = '1';

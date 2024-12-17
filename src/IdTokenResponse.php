@@ -13,19 +13,16 @@ use League\OAuth2\Server\ResponseTypes\BearerTokenResponse;
 use OpenIDConnect\Interfaces\CurrentRequestServiceInterface;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 use OpenIDConnect\Interfaces\IdentityRepositoryInterface;
+use OpenIDConnect\Services\IssuedByGetter;
 
 class IdTokenResponse extends BearerTokenResponse {
     use CryptTrait;
 
     protected IdentityRepositoryInterface $identityRepository;
-
     protected ClaimExtractor $claimExtractor;
-
     private Configuration $config;
     private ?CurrentRequestServiceInterface $currentRequestService;
-
     private array $tokenHeaders;
-
     private bool $useMicroseconds;
 
     public function __construct(
@@ -36,6 +33,7 @@ class IdTokenResponse extends BearerTokenResponse {
         bool $useMicroseconds = true,
         CurrentRequestServiceInterface $currentRequestService = null,
         $encryptionKey = null,
+        protected string $issuedByConfigured = 'laravel',
     ) {
         $this->identityRepository = $identityRepository;
         $this->claimExtractor = $claimExtractor;
@@ -58,7 +56,7 @@ class IdTokenResponse extends BearerTokenResponse {
         return $this->config
             ->builder()
             ->permittedFor($accessToken->getClient()->getIdentifier())
-            ->issuedBy('https://' . $_SERVER['HTTP_HOST'])
+            ->issuedBy(IssuedByGetter::get($this->currentRequestService, $this->issuedByConfigured))
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
             ->relatedTo($userEntity->getIdentifier());

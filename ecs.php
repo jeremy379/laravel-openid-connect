@@ -10,7 +10,6 @@ use PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\FunctionSpacingSniff;
 use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
 use SlevomatCodingStandard\Sniffs\Arrays\TrailingArrayCommaSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff;
-use SlevomatCodingStandard\Sniffs\Classes\ClassMemberSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\ConstantSpacingSniff;
 use SlevomatCodingStandard\Sniffs\Classes\EmptyLinesAroundClassBracesSniff;
 use SlevomatCodingStandard\Sniffs\Classes\PropertySpacingSniff;
@@ -38,11 +37,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(ClassConstantVisibilitySniff::class);
     $services->set(TrailingArrayCommaSniff::class);
     $services->set(ArrayIndentSniff::class);
-    $services->set(ClassMemberSpacingSniff::class);
     $services->set(CastSpacingSniff::class);
     $services->set(SpaceAfterCastSniff::class);
     $services->set(LineLengthSniff::class)
-        ->property('absoluteLineLimit', 120);
+        ->property('absoluteLineLimit', 150);
     $services->set(FunctionSpacingSniff::class)
         ->property('spacing', 1)
         ->property('spacingBeforeFirst', 0)
