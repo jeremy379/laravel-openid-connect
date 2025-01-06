@@ -22,6 +22,7 @@ class IdTokenTest extends TestCase
     protected function setUp(): void
     {
         $_SERVER['HTTP_HOST'] = Config::HTTP_HOST;
+        $_SERVER['REQUEST_SCHEME'] = Config::REQUEST_SCHEME;
     }
 
     public function test_can_create_id_token_responses()

@@ -47,7 +47,7 @@ class TokensTest extends TestCase
         $isValid = $config->validator()->validate(
             $token,
             ...[
-                new IssuedBy('https://' . Config::HTTP_HOST),
+                new IssuedBy(Config::REQUEST_SCHEME . '://' . Config::HTTP_HOST),
                 new PermittedFor(Config::CLIENT_ID),
                 new RelatedTo(Config::USER_ID),
                 new SignedWith(
