@@ -4,3 +4,4 @@ vendor/
 composer.lock
 tmp/
 .phplint-cache
+.idea/
