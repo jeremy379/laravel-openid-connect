@@ -6,9 +6,9 @@ use DateInterval;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
+use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use OpenIDConnect\Interfaces\CurrentRequestServiceInterface;
 use Psr\Http\Message\ResponseInterface;
-use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 
 /**
  * This class extends the default AuthCodeGrant class to add support for the nonce parameter.
