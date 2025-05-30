@@ -5,7 +5,8 @@ namespace OpenIDConnect\Grant;
 use DateInterval;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
-use League\OAuth2\Server\RequestTypes\AuthorizationRequest;
+use League\OAuth2\Server\RequestTypes\AuthorizationRequestInterface;
+use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 use OpenIDConnect\Interfaces\CurrentRequestServiceInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -43,7 +44,7 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
     /**
      * {@inheritdoc}
      */
-    public function completeAuthorizationRequest(AuthorizationRequest $authorizationRequest)
+    public function completeAuthorizationRequest(AuthorizationRequestInterface $authorizationRequest): ResponseTypeInterface
     {
         // See https://github.com/steverhoades/oauth2-openid-connect-server/issues/47#issuecomment-1228370632
 
