@@ -15,8 +15,6 @@ class DiscoveryController
      */
     public function __invoke(Request $request, LaravelCurrentRequestService $currentRequestService)
     {
-        URL::forceScheme('https'); // for route() calls below
-
         $response = [
             'issuer' => IssuedByGetter::get($currentRequestService, config('openid.issuedBy', 'laravel')),
             'authorization_endpoint' => route('passport.authorizations.authorize'),
