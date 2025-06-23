@@ -9,12 +9,17 @@ This is a fork of [ronvanderheijden/openid-connect](https://github.com/ronvander
 
 It's made to support only Laravel and [Laravel Passport](https://laravel.com/docs/10.x/passport).
 
+## Older version than laravel 12 ? 
+
+Use tag 2.7.0 https://github.com/jeremy379/laravel-openid-connect/tree/2.7.0
+
+
 ## Requirements
 
 * Requires PHP version `^8.2`.
 * [lcobucci/jwt](https://github.com/lcobucci/jwt) version `^4.0`.
 * [league/oauth2-server](https://github.com/thephpleague/oauth2-server) `^8.2`.
-* Laravel 10 to 12
+* Laravel 12
 * Laravel Passport installed and configured
 
 ## Installation
@@ -28,13 +33,9 @@ Provide more scopes (e.g. `openid profile email`) to receive additional claims i
 
 The id_token will be returned after the call to the `oauth/token` endpoint. 
 
-### Laravel 11
-
-On Laravel 11 you may need to register the package: https://github.com/jeremy379/laravel-openid-connect/issues/31 
-
 ## Configuration
 
-### 1.) Add the scope in your AuthServiceProvider in boot() method.
+### 1.) Add the scope in your AuthServiceProvider in boot() method, or create a new one in app/Providers
 
 ```php
 Passport::tokensCan(config('openid.passport.tokens_can'));
@@ -46,6 +47,34 @@ You may want to combine existing scope and oauth implementation with the open ID
 $scopes = array_merge($yourScope, config('openid.passport.tokens_can'));
 Passport::tokensCan($scopes);
 ````
+
+### 1.2 ) Register package passport provider
+
+In AppServiceProfider
+
+```php
+
+    public function register(): void
+    {
+        //...
+        $this->app->register(\OpenIDConnect\Laravel\PassportServiceProvider::class);
+    }
+```
+
+And disable auto discovery of Laravel provider in composer json
+
+```
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/passport"
+            ]
+        }
+    },
+
+```
+
+Then run `php artisan package:discover`
 
 ### 2.) create an entity
 Create an entity class in `app/Entities/` named `IdentityEntity` or `UserEntity`. This entity is used to collect the claims.
