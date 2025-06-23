@@ -88,4 +88,9 @@ return [
      * or another string that will be used as-is
      */
     'issuedBy' => 'laravel',
+
+    /**
+     * By default, https is enforce. You can disable it here.
+     */
+    'forceHttps' => true,
 ];
