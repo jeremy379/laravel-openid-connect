@@ -3,16 +3,13 @@
 
 # OpenID Connect for Laravel
 
-OpenID Connect support to the PHP League's OAuth2 Server.
+OpenID Connect support for [Laravel Passport](https://laravel.com/docs/10.x/passport) to the PHP League's OAuth2 Server.
 
-This is a fork of [ronvanderheijden/openid-connect](https://github.com/ronvanderheijden/openid-connect).
-
-It's made to support only Laravel and [Laravel Passport](https://laravel.com/docs/10.x/passport).
+This was starter over the work of [ronvanderheijden/openid-connect](https://github.com/ronvanderheijden/openid-connect).
 
 ## Older version than laravel 12 ? 
 
 Use tag 2.7.0 https://github.com/jeremy379/laravel-openid-connect/tree/2.7.0
-
 
 ## Requirements
 
@@ -35,23 +32,29 @@ The id_token will be returned after the call to the `oauth/token` endpoint.
 
 ## Configuration
 
-### 1.) Add the scope in your AuthServiceProvider in boot() method, or create a new one in app/Providers
+### Add the scope in your AuthServiceProvider in boot() method
+
+If you do not have a `AuthServiceProvider`, create one in `app/Providers` and link it in `bootstrap/providers.php`
 
 ```php
-Passport::tokensCan(config('openid.passport.tokens_can'));
+    public function boot(): void
+    {
+        Passport::tokensCan(config('openid.passport.tokens_can'));
+    }
 ````
 
 You may want to combine existing scope and oauth implementation with the open ID connect.
 
 ```php
-$scopes = array_merge($yourScope, config('openid.passport.tokens_can'));
+$scopes = array_merge($yourScopes, config('openid.passport.tokens_can'));
 Passport::tokensCan($scopes);
 ````
 
-### 1.2 ) Register package passport provider
+### Register package passport provider
 
-In AppServiceProfider
+In `boostrap/providers.php`, add `\OpenIDConnect\Laravel\PassportServiceProvider::class`
 
+Alternatively, you can register in in your `AppServiceProvider.php`
 ```php
 
     public function register(): void
@@ -61,7 +64,7 @@ In AppServiceProfider
     }
 ```
 
-And disable auto discovery of Laravel provider in composer json
+And disable auto discovery of Laravel provider in composer json. This will ensure only our provider is used.
 
 ```
     "extra": {
@@ -76,7 +79,7 @@ And disable auto discovery of Laravel provider in composer json
 
 Then run `php artisan package:discover`
 
-### 2.) create an entity
+### OpenID need to be linked to a user/identity entity, create that entity
 Create an entity class in `app/Entities/` named `IdentityEntity` or `UserEntity`. This entity is used to collect the claims.
 
 You can customize the entity setup by using another IdentityRepository, this is customizable in the config file.
