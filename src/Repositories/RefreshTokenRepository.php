@@ -8,20 +8,20 @@ use OpenIDConnect\Entities\RefreshTokenEntity;
 
 class RefreshTokenRepository implements RefreshTokenRepositoryInterface
 {
-    public function getNewRefreshToken()
+    public function getNewRefreshToken(): RefreshTokenEntity
     {
         return new RefreshTokenEntity();
     }
 
-    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
+    public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity): void
     {
     }
 
-    public function revokeRefreshToken($tokenId)
+    public function revokeRefreshToken($tokenId): void
     {
     }
 
-    public function isRefreshTokenRevoked($tokenId)
+    public function isRefreshTokenRevoked($tokenId): bool
     {
         return false;
     }

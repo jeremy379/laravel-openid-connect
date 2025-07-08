@@ -9,7 +9,7 @@ use OpenIDConnect\Entities\AccessTokenEntity;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface
 {
-    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null)
+    public function getNewToken(ClientEntityInterface $clientEntity, array $scopes, $userIdentifier = null): AccessTokenEntity
     {
         $accessToken = new AccessTokenEntity();
         $accessToken->setClient($clientEntity);
@@ -21,15 +21,15 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         return $accessToken;
     }
 
-    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
+    public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity): void
     {
     }
 
-    public function revokeAccessToken($tokenId)
+    public function revokeAccessToken($tokenId): void
     {
     }
 
-    public function isAccessTokenRevoked($tokenId)
+    public function isAccessTokenRevoked($tokenId): bool
     {
         return false;
     }
