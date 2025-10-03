@@ -38,7 +38,7 @@ class DiscoveryController
             ],
             "code_challenge_methods_supported" => [
                 "plain",
-                "S256"
+                "S256",
             ]
         ];
 
