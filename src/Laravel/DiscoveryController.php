@@ -36,6 +36,10 @@ class DiscoveryController
                 'client_secret_basic',
                 'client_secret_post',
             ],
+            "code_challenge_methods_supported" => [
+                "plain",
+                "S256",
+            ],
         ];
 
         if (Route::has('openid.userinfo')) {
