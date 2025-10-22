@@ -54,7 +54,9 @@ Passport::tokensCan($scopes);
 
 Laravel passport v13+ does not automatically register the authorization view resulting in an `BindingResolutionException` when you access the /oauth/authorize endpoint, we need to tell passport which view to use
 
-You can add it to your `AuthServiceProvider`
+You have multiple options to link your views:
+
+- You can add it to your `AuthServiceProvider`
 
 ```php
     public function boot(): void
@@ -62,6 +64,19 @@ You can add it to your `AuthServiceProvider`
         Passport::authorizationView('auth.oauth.authorize');
     }
 ```
+
+- Or you can add into your 'AppServiceProvider'
+
+```php
+    public function register(): void
+    {
+        //...
+        $this->app->bind(AuthorizationViewResponse::class, fn() => new SimpleViewResponse('auth.approve'));
+
+    }
+```
+
+An example of views can be found in the [view-example/views](https://github.com/jeremy379/laravel-openid-connect/tree/main/src)
 
 ### Register package passport provider
 
