@@ -31,8 +31,8 @@ class IdTokenResponse extends BearerTokenResponse {
         Configuration $config,
         array $tokenHeaders = [],
         bool $useMicroseconds = true,
-        CurrentRequestServiceInterface $currentRequestService = null,
-        $encryptionKey = null,
+        ?CurrentRequestServiceInterface $currentRequestService = null,
+        string|Key|null $encryptionKey = null,
         protected string $issuedByConfigured = 'laravel',
     ) {
         $this->identityRepository = $identityRepository;
