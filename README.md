@@ -1,4 +1,3 @@
-
 [![PHP 8.2](https://github.com/jeremy379/laravel-openid-connect/actions/workflows/php82.yml/badge.svg)](https://github.com/jeremy379/laravel-openid-connect/actions/workflows/php82.yml)
 
 # OpenID Connect for Laravel
@@ -7,7 +6,7 @@ OpenID Connect support for [Laravel Passport](https://laravel.com/docs/10.x/pass
 
 This was starter over the work of [ronvanderheijden/openid-connect](https://github.com/ronvanderheijden/openid-connect).
 
-## Older version than laravel 12 ? 
+## Older version than laravel 12 ?
 
 Use tag 2.7.0 https://github.com/jeremy379/laravel-openid-connect/tree/2.7.0
 
@@ -25,10 +24,10 @@ Use tag 2.7.0 https://github.com/jeremy379/laravel-openid-connect/tree/2.7.0
 composer require jeremy379/laravel-openid-connect
 ```
 
-Now when calling the `oauth/authorize` endpoint, provide the `openid` scope to get an `id_token`.  
+Now when calling the `oauth/authorize` endpoint, provide the `openid` scope to get an `id_token`.
 Provide more scopes (e.g. `openid profile email`) to receive additional claims in the `id_token`.
 
-The id_token will be returned after the call to the `oauth/token` endpoint. 
+The id_token will be returned after the call to the `oauth/token` endpoint.
 
 ## Configuration
 
@@ -83,6 +82,7 @@ An example of views can be found in the [view-example/views](https://github.com/
 In `boostrap/providers.php`, add `\OpenIDConnect\Laravel\PassportServiceProvider::class`
 
 Alternatively, you can register in in your `AppServiceProvider.php`
+
 ```php
 
     public function register(): void
@@ -108,22 +108,26 @@ And disable auto discovery of Laravel provider in composer json. This will ensur
 Then run `php artisan package:discover`
 
 ### OpenID need to be linked to a user/identity entity, create that entity
+
 Create an entity class in `app/Entities/` named `IdentityEntity` or `UserEntity`. This entity is used to collect the claims.
 
 You can customize the entity setup by using another IdentityRepository, this is customizable in the config file.
 
 ```php
+
 # app/Entities/IdentityEntity.php
 namespace App\Entities;
 
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use OpenIDConnect\Claims\Traits\WithClaims;
+use OpenIDConnect\Entities\Traits\WithCustomPermittedFor;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 
 class IdentityEntity implements IdentityEntityInterface
 {
     use EntityTrait;
     use WithClaims;
+    use WithCustomPermittedFor;
 
     /**
      * The user to collect the additional information for
@@ -149,6 +153,21 @@ class IdentityEntity implements IdentityEntityInterface
             'email' => $this->user->email,
         ];
     }
+
+    /**
+     * Set Custom aud
+     * explanation: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+     * When building id token, client id is merged with getPermittedFor 
+     */
+    public function getPermittedFor(): array
+    {
+        /*
+        * Returns a list of audience identifiers.
+        * If the list is empty, aud is returned as a string containing the client ID.
+        * If the list contains values, the client ID is merged in the array and aud is returned as an array.
+        */
+        return [];
+    }
 }
 ```
 
@@ -156,7 +175,7 @@ class IdentityEntity implements IdentityEntityInterface
 
 Here is an example to verify the signature with lcobucci/jwt
 
-```php 
+```php
   $config = Configuration::forSymmetricSigner(
     new \Lcobucci\JWT\Signer\Rsa\Sha256(),
     InMemory::file(base_path('oauth-public.key')) //This is the public key generate by passport. You need to share it.
@@ -170,7 +189,9 @@ Here is an example to verify the signature with lcobucci/jwt
 ```
 
 ### Publishing the config
+
 In case you want to change the default scopes, add custom claim sets or change the repositories, you can publish the openid config using:
+
 ```sh
 php artisan vendor:publish --tag=openid
 ```
@@ -180,11 +201,13 @@ php artisan vendor:publish --tag=openid
 When `nonce` is required, you need to pass it as a query parameter to `passport.authorizations.approve` during authorization step.
 
 Example based on default Passport's `authorize.blade.php`:
+
 ```
 <form method="post" action="{{ route('passport.authorizations.approve').'?nonce='.$request->nonce }}">
 ```
 
 ### Optional Configuration
+
 You can add any JWT Token Headers that you want to the `token_headers` array in your `openid` configuration file.
 
 This can be useful to define things like the [`kid`(Key ID)](https://datatracker.ietf.org/doc/html/rfc7517#section-4.5).  The `kid` can be any string as long as it can uniquely identify the key you want to use in your [JWKS](https://datatracker.ietf.org/doc/html/rfc7517#section-5). This can be useful when changing or rolling keys.
@@ -206,4 +229,5 @@ You can fill an issue in the github section dedicated for that. I'll try to main
 Are you actively using this package and wanna help too? Reach out to me, I'm looking for help to maintain this package.
 
 ## License
+
 OpenID Connect is open source and licensed under [the MIT licence](https://github.com/ronvanderheijden/openid-connect/blob/master/LICENSE.txt).

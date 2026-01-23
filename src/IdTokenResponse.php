@@ -55,7 +55,7 @@ class IdTokenResponse extends BearerTokenResponse {
 
         return $this->config
             ->builder()
-            ->permittedFor($accessToken->getClient()->getIdentifier())
+            ->permittedFor(...$this->permittedFor($accessToken, $userEntity))
             ->issuedBy(IssuedByGetter::get($this->currentRequestService, $this->issuedByConfigured))
             ->issuedAt($dateTimeImmutableObject)
             ->expiresAt($dateTimeImmutableObject->add(new DateInterval('PT1H')))
@@ -126,5 +126,21 @@ class IdTokenResponse extends BearerTokenResponse {
             }
         }
         return false;
+    }
+
+    private function permittedFor($accessToken, $userEntity)
+    {
+        $customPermittedFor = $userEntity->getPermittedFor();
+
+        if (empty($customPermittedFor)) {
+            return $accessToken->getClient()->getIdentifier();
+        }
+
+        $permittedFor = is_array($customPermittedFor) ? $customPermittedFor : [$customPermittedFor];
+
+        // Merge client identifier with permittedFor array, ensuring uniqueness
+        $finalPermittedFor = array_unique(array_merge([$accessToken->getClient()->getIdentifier()], $permittedFor));
+
+        return $finalPermittedFor;
     }
 }

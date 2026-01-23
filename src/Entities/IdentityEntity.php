@@ -4,12 +4,14 @@ namespace OpenIDConnect\Entities;
 
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use OpenIDConnect\Claims\Traits\WithClaims;
+use OpenIDConnect\Entities\Traits\WithCustomPermittedFor;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 
 class IdentityEntity implements IdentityEntityInterface
 {
     use EntityTrait;
     use WithClaims;
+    use WithCustomPermittedFor;
 
     /**
      * @param string[] $scopes Optional scope filter
@@ -41,5 +43,18 @@ class IdentityEntity implements IdentityEntityInterface
             // custom
             'what_he_knows' => 'Nothing!',
         ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getPermittedFor(): array
+    {
+        /*
+        * Returns a list of audience identifiers.
+        * If the list is empty, aud is returned as a string containing the client ID.
+        * If the list contains values, the client ID is merged in the array and aud is returned as an array.
+        */
+        return [];
     }
 }
