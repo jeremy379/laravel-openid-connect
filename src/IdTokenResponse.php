@@ -133,7 +133,7 @@ class IdTokenResponse extends BearerTokenResponse {
         $customPermittedFor = $userEntity->getPermittedFor();
 
         if (empty($customPermittedFor)) {
-            return $accessToken->getClient()->getIdentifier();
+            return [$accessToken->getClient()->getIdentifier()];
         }
 
         $permittedFor = is_array($customPermittedFor) ? $customPermittedFor : [$customPermittedFor];
