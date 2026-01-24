@@ -44,17 +44,4 @@ class IdentityEntity implements IdentityEntityInterface
             'what_he_knows' => 'Nothing!',
         ];
     }
-
-    /**
-     * @return string[]
-     */
-    public function getPermittedFor(): array
-    {
-        /*
-        * Returns a list of audience identifiers.
-        * If the list is empty, aud is returned as a string containing the client ID.
-        * If the list contains values, the client ID is merged in the array and aud is returned as an array.
-        */
-        return [];
-    }
 }

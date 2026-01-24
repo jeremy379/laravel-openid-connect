@@ -36,18 +36,18 @@ The id_token will be returned after the call to the `oauth/token` endpoint.
 If you do not have a `AuthServiceProvider`, create one in `app/Providers` and link it in `bootstrap/providers.php`
 
 ```php
-    public function boot(): void
+public function boot(): void
     {
         Passport::tokensCan(config('openid.passport.tokens_can'));
     }
-````
+```
 
 You may want to combine existing scope and oauth implementation with the open ID connect.
 
 ```php
 $scopes = array_merge($yourScopes, config('openid.passport.tokens_can'));
 Passport::tokensCan($scopes);
-````
+```
 
 ### Register the authorization view
 
@@ -58,7 +58,7 @@ You have multiple options to link your views:
 - You can add it to your `AuthServiceProvider`
 
 ```php
-    public function boot(): void
+public function boot(): void
     {
         Passport::authorizationView('auth.oauth.authorize');
     }
@@ -67,7 +67,7 @@ You have multiple options to link your views:
 - Or you can add into your 'AppServiceProvider'
 
 ```php
-    public function register(): void
+public function register(): void
     {
         //...
         $this->app->bind(AuthorizationViewResponse::class, fn() => new SimpleViewResponse('auth.approve'));
@@ -84,8 +84,7 @@ In `boostrap/providers.php`, add `\OpenIDConnect\Laravel\PassportServiceProvider
 Alternatively, you can register in in your `AppServiceProvider.php`
 
 ```php
-
-    public function register(): void
+public function register(): void
     {
         //...
         $this->app->register(\OpenIDConnect\Laravel\PassportServiceProvider::class);
@@ -95,14 +94,13 @@ Alternatively, you can register in in your `AppServiceProvider.php`
 And disable auto discovery of Laravel provider in composer json. This will ensure only our provider is used.
 
 ```
-    "extra": {
+"extra": {
         "laravel": {
             "dont-discover": [
                 "laravel/passport"
             ]
         }
     },
-
 ```
 
 Then run `php artisan package:discover`
@@ -114,7 +112,6 @@ Create an entity class in `app/Entities/` named `IdentityEntity` or `UserEntity`
 You can customize the entity setup by using another IdentityRepository, this is customizable in the config file.
 
 ```php
-
 # app/Entities/IdentityEntity.php
 namespace App\Entities;
 
@@ -155,19 +152,15 @@ class IdentityEntity implements IdentityEntityInterface
     }
 
     /**
-     * Set Custom aud
+     * Set custom audiences (aud) dynamically
      * explanation: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
-     * When building id token, client id is merged with getPermittedFor 
+     * When building id token, client id is merged with getPermittedFor()
      */
-    public function getPermittedFor(): array
-    {
-        /*
-        * Returns a list of audience identifiers.
-        * If the list is empty, aud is returned as a string containing the client ID.
-        * If the list contains values, the client ID is merged in the array and aud is returned as an array.
-        */
-        return [];
-    }
+     $this->setPermittedFor([
+         'https://api.example.com/v1/resource',
+         'custom aud 2'
+      ]);
+   
 }
 ```
 
@@ -176,7 +169,7 @@ class IdentityEntity implements IdentityEntityInterface
 Here is an example to verify the signature with lcobucci/jwt
 
 ```php
-  $config = Configuration::forSymmetricSigner(
+$config = Configuration::forSymmetricSigner(
     new \Lcobucci\JWT\Signer\Rsa\Sha256(),
     InMemory::file(base_path('oauth-public.key')) //This is the public key generate by passport. You need to share it.
   );

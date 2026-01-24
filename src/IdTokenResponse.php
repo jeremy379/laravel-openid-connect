@@ -130,17 +130,19 @@ class IdTokenResponse extends BearerTokenResponse {
 
     private function permittedFor($accessToken, $userEntity)
     {
-        $customPermittedFor = $userEntity->getPermittedFor();
-
-        if (empty($customPermittedFor)) {
-            return [$accessToken->getClient()->getIdentifier()];
+        // Backward compatibility: only call getPermittedFor if it exists
+        if (method_exists($userEntity, 'getPermittedFor')) {
+            $customPermittedFor = $userEntity->getPermittedFor();
+            
+            if (!empty($customPermittedFor)) {
+                $permittedFor = is_array($customPermittedFor) ? $customPermittedFor : [$customPermittedFor];
+                // Merge client identifier with permittedFor array, ensuring uniqueness
+                $finalPermittedFor = array_unique(array_merge([$accessToken->getClient()->getIdentifier()], $permittedFor));
+                return $finalPermittedFor;
+            }
         }
 
-        $permittedFor = is_array($customPermittedFor) ? $customPermittedFor : [$customPermittedFor];
-
-        // Merge client identifier with permittedFor array, ensuring uniqueness
-        $finalPermittedFor = array_unique(array_merge([$accessToken->getClient()->getIdentifier()], $permittedFor));
-
-        return $finalPermittedFor;
+        // Fallback: just the client identifier
+        return [$accessToken->getClient()->getIdentifier()];
     }
 }
