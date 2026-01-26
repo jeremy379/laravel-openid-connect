@@ -2,17 +2,17 @@
 
 namespace OpenIDConnect\Tests\Feature;
 
+use OpenIDConnect\ClaimExtractor;
+use OpenIDConnect\Entities\IdentityEntity;
+use OpenIDConnect\IdTokenResponse;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 use OpenIDConnect\Interfaces\IdentityRepositoryInterface;
-use OpenIDConnect\Tests\Factories\ConfigutationFactory;
-use OpenIDConnect\ClaimExtractor;
-use OpenIDConnect\IdTokenResponse;
 use OpenIDConnect\Tests\Config;
 use OpenIDConnect\Tests\Factories\AccessTokenFactory;
 use OpenIDConnect\Tests\Factories\ClientFactory;
+use OpenIDConnect\Tests\Factories\ConfigutationFactory;
 use OpenIDConnect\Tests\Feature\Traits\WithSigningKey;
 use PHPUnit\Framework\TestCase;
-use OpenIDConnect\Entities\IdentityEntity;
 
 class IdTokenCustomAudTest extends TestCase
 {
