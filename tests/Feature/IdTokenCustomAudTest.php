@@ -17,6 +17,7 @@ use OpenIDConnect\Entities\IdentityEntity;
 class IdTokenCustomAudTest extends TestCase
 {
     use WithSigningKey;
+
     protected function setUp(): void
     {
         $this->ensureSigningKeyExists();
@@ -90,5 +91,4 @@ class IdTokenCustomAudTest extends TestCase
 
         $this->assertEqualsCanonicalizing($expected, $aud);
     }
-
 }
