@@ -112,6 +112,7 @@ Create an entity class in `app/Entities/` named `IdentityEntity` or `UserEntity`
 You can customize the entity setup by using another IdentityRepository, this is customizable in the config file.
 
 ```php
+
 # app/Entities/IdentityEntity.php
 namespace App\Entities;
 
@@ -132,6 +133,19 @@ class IdentityEntity implements IdentityEntityInterface
     protected User $user;
 
     /**
+     * Custom audiences
+     * explanation: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
+     * When building id token, client id is merged with getPermittedFor()
+     */
+    public function __construct()
+    {
+        $this->setPermittedFor([
+            'https://api.example.com/v1/resource',
+            'custom aud 2'
+        ]);
+    }
+
+    /**
      * The identity repository creates this entity and provides the user id
      * @param mixed $identifier
      */
@@ -150,17 +164,6 @@ class IdentityEntity implements IdentityEntityInterface
             'email' => $this->user->email,
         ];
     }
-
-    /**
-     * Set custom audiences (aud) dynamically
-     * explanation: https://openid.net/specs/openid-connect-core-1_0.html#IDToken
-     * When building id token, client id is merged with getPermittedFor()
-     */
-     $this->setPermittedFor([
-         'https://api.example.com/v1/resource',
-         'custom aud 2'
-      ]);
-   
 }
 ```
 
