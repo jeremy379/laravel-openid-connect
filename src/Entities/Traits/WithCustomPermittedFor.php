@@ -7,7 +7,7 @@ trait WithCustomPermittedFor
     /**
      * @param string[] $permittedFor
      */
-    protected array $permittedFor;
+    protected array $permittedFor = [];
 
     /**
      * @return string[]
