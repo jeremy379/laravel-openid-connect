@@ -4,12 +4,14 @@ namespace OpenIDConnect\Entities;
 
 use League\OAuth2\Server\Entities\Traits\EntityTrait;
 use OpenIDConnect\Claims\Traits\WithClaims;
+use OpenIDConnect\Entities\Traits\WithCustomPermittedFor;
 use OpenIDConnect\Interfaces\IdentityEntityInterface;
 
 class IdentityEntity implements IdentityEntityInterface
 {
     use EntityTrait;
     use WithClaims;
+    use WithCustomPermittedFor;
 
     /**
      * @param string[] $scopes Optional scope filter

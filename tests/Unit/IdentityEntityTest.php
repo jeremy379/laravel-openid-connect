@@ -36,4 +36,14 @@ class IdentityEntityTest extends TestCase
     {
         $this->assertTrue(method_exists(new IdentityEntity(), 'setIdentifier'));
     }
+
+    public function test_identity_entity_has_get_permitted_for_method()
+    {
+        $this->assertTrue(method_exists(new IdentityEntity(), 'getPermittedFor'));
+    }
+
+    public function test_identity_entity_has_set_permitted_for_method()
+    {
+        $this->assertTrue(method_exists(new IdentityEntity(), 'setPermittedFor'));
+    }
 }
