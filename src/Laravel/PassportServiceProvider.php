@@ -36,7 +36,7 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
             __DIR__ . '/config/openid.php' => $this->app->configPath('openid.php'),
         ], ['openid', 'openid-config']);
 
-        $this->loadRoutesFrom(__DIR__."/routes/web.php");
+        $this->loadRoutesFrom(__DIR__ . "/routes/web.php");
 
         $this->registerClaimExtractor();
     }
@@ -108,7 +108,8 @@ class PassportServiceProvider extends Passport\PassportServiceProvider
         return $keyBytes;
     }
 
-    public function registerClaimExtractor() {
+    public function registerClaimExtractor()
+    {
         $this->app->singleton(ClaimExtractor::class, function () {
             $customClaimSets = config('openid.custom_claim_sets');
 

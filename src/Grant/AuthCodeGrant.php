@@ -34,8 +34,8 @@ class AuthCodeGrant extends \League\OAuth2\Server\Grant\AuthCodeGrant
         RefreshTokenRepositoryInterface $refreshTokenRepository,
         DateInterval $authCodeTTL,
         ResponseInterface $psr7Response,
-        CurrentRequestServiceInterface $currentRequestService)
-    {
+        CurrentRequestServiceInterface $currentRequestService
+    ) {
         parent::__construct($authCodeRepository, $refreshTokenRepository, $authCodeTTL);
         $this->psr7Response = $psr7Response;
         $this->currentRequestService = $currentRequestService;

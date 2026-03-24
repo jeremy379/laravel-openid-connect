@@ -12,10 +12,10 @@ class LaravelCurrentRequestService implements CurrentRequestServiceInterface
     public function getRequest(): ServerRequestInterface
     {
         return (new PsrHttpFactory(
-            new Psr17Factory,
-            new Psr17Factory,
-            new Psr17Factory,
-            new Psr17Factory
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory()
         ))->createRequest(request());
     }
 }
