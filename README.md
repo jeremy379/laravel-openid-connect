@@ -218,6 +218,33 @@ Additionally, you can configure the JWKS url and some settings for discovery in 
 
 _Note: If you define a `kid` header, it will be added to the JWK returned at the jwks_url (if `jwks` is enabled in the configuration)._
 
+### UserInfo endpoint
+
+The package provides an optional `GET /oauth/userinfo` endpoint as defined by [OpenID Connect Core §5.3](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo). It is **disabled by default** and can be enabled in your published config:
+
+```php
+'routes' => [
+    // ...
+    'userinfo' => true,
+],
+```
+
+Once enabled:
+- The endpoint requires a valid Bearer access token (protected by Passport's `auth:api` guard).
+- It returns the claims from your `IdentityEntity::getClaims()` filtered to the scopes granted on the token.
+- The `sub` claim (the user's identifier) is always included.
+
+Example response for a token with the `openid email` scopes:
+
+```json
+{
+    "sub": "42",
+    "email": "jon.snow@dorne.com"
+}
+```
+
+When enabled, the `userinfo_endpoint` field is automatically included in the OpenID Connect Discovery document (`/.well-known/openid-configuration`).
+
 ## Support
 
 You can fill an issue in the github section dedicated for that. I'll try to maintain this fork.
