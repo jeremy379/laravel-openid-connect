@@ -54,6 +54,12 @@ return [
           * Defaults to /oauth/jwks
           */
         'jwks_url' => '/oauth/jwks',
+        /**
+         * When set to true, this package will expose the UserInfo endpoint at /oauth/userinfo.
+         * The endpoint is protected by Passport's auth:api guard and returns claims
+         * for the authenticated user filtered by the access token's granted scopes.
+         */
+        'userinfo' => false,
     ],
 
     /**
