@@ -18,55 +18,50 @@ use SlevomatCodingStandard\Sniffs\Exceptions\DeadCatchSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\AlphabeticallySortedUsesSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UnusedUsesSniff;
 use SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff;
-use SlevomatCodingStandard\Sniffs\PHP\OptimizedFunctionsWithoutUnpackingSniff;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symplify\EasyCodingStandard\ValueObject\Option;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 use Symplify\EasyCodingStandard\ValueObject\Set\SetList;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $services = $containerConfigurator->services();
-
-    $services->set(FileHeaderSniff::class);
-    $services->set(TraitUseDeclarationSniff::class);
-    $services->set(DisallowLongArraySyntaxSniff::class);
-    $services->set(UnusedUsesSniff::class);
-    $services->set(UseFromSameNamespaceSniff::class);
-    $services->set(OptimizedFunctionsWithoutUnpackingSniff::class);
-    $services->set(DeadCatchSniff::class);
-    $services->set(AlphabeticallySortedUsesSniff::class);
-    $services->set(ClassConstantVisibilitySniff::class);
-    $services->set(TrailingArrayCommaSniff::class);
-    $services->set(ArrayIndentSniff::class);
-    $services->set(CastSpacingSniff::class);
-    $services->set(SpaceAfterCastSniff::class);
-    $services->set(LineLengthSniff::class)
-        ->property('absoluteLineLimit', 150);
-    $services->set(FunctionSpacingSniff::class)
-        ->property('spacing', 1)
-        ->property('spacingBeforeFirst', 0)
-        ->property('spacingAfterLast', 0);
-    $services->set(PropertySpacingSniff::class)
-        ->property('minLinesCountBeforeWithComment', 1)
-        ->property('maxLinesCountBeforeWithComment', 1)
-        ->property('minLinesCountBeforeWithoutComment', 0)
-        ->property('maxLinesCountBeforeWithoutComment', 1);
-    $services->set(ConstantSpacingSniff::class)
-        ->property('minLinesCountBeforeWithComment', 1)
-        ->property('maxLinesCountBeforeWithComment', 1)
-        ->property('minLinesCountBeforeWithoutComment', 0)
-        ->property('maxLinesCountBeforeWithoutComment', 1);
-    $services->set(EmptyLinesAroundClassBracesSniff::class)
-        ->property('linesCountAfterOpeningBrace', 0)
-        ->property('linesCountBeforeClosingBrace', 0);
-    $services->set(BinaryOperatorSpacesFixer::class)
-        ->call('configure', [
-            ['default' => BinaryOperatorSpacesFixer::SINGLE_SPACE],
-        ]);
-
-    $parameters = $containerConfigurator->parameters();
-
-    $parameters->set(Option::PATHS, [__DIR__]);
-    $parameters->set(Option::SETS, [
-        SetList::PSR_12,
+return ECSConfig::configure()
+    ->withPaths([__DIR__])
+    ->withSets([SetList::PSR_12])
+    ->withRules([
+        FileHeaderSniff::class,
+        TraitUseDeclarationSniff::class,
+        DisallowLongArraySyntaxSniff::class,
+        UnusedUsesSniff::class,
+        UseFromSameNamespaceSniff::class,
+        DeadCatchSniff::class,
+        AlphabeticallySortedUsesSniff::class,
+        ClassConstantVisibilitySniff::class,
+        TrailingArrayCommaSniff::class,
+        ArrayIndentSniff::class,
+        CastSpacingSniff::class,
+        SpaceAfterCastSniff::class,
+    ])
+    ->withConfiguredRule(LineLengthSniff::class, [
+        'absoluteLineLimit' => 150,
+    ])
+    ->withConfiguredRule(FunctionSpacingSniff::class, [
+        'spacing' => 1,
+        'spacingBeforeFirst' => 0,
+        'spacingAfterLast' => 0,
+    ])
+    ->withConfiguredRule(PropertySpacingSniff::class, [
+        'minLinesCountBeforeWithComment' => 1,
+        'maxLinesCountBeforeWithComment' => 1,
+        'minLinesCountBeforeWithoutComment' => 0,
+        'maxLinesCountBeforeWithoutComment' => 1,
+    ])
+    ->withConfiguredRule(ConstantSpacingSniff::class, [
+        'minLinesCountBeforeWithComment' => 1,
+        'maxLinesCountBeforeWithComment' => 1,
+        'minLinesCountBeforeWithoutComment' => 0,
+        'maxLinesCountBeforeWithoutComment' => 1,
+    ])
+    ->withConfiguredRule(EmptyLinesAroundClassBracesSniff::class, [
+        'linesCountAfterOpeningBrace' => 0,
+        'linesCountBeforeClosingBrace' => 0,
+    ])
+    ->withConfiguredRule(BinaryOperatorSpacesFixer::class, [
+        'default' => BinaryOperatorSpacesFixer::SINGLE_SPACE,
     ]);
-};
