@@ -26,6 +26,5 @@ trait WithDefaultAsserts
         $this->assertIsObject($json);
         $this->assertTrue(property_exists($json, 'access_token'));
         $this->assertTrue(property_exists($json, 'refresh_token'));
-
     }
 }

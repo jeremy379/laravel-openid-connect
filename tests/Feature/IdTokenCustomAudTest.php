@@ -29,7 +29,7 @@ class IdTokenCustomAudTest extends TestCase
         $identity->setIdentifier(Config::USER_ID);
         $identity->setPermittedFor($customAudiences);
 
-        $identityRepository = new class ($identity) implements IdentityRepositoryInterface {
+        $identityRepository = new class($identity) implements IdentityRepositoryInterface {
             private $identity;
 
             public function __construct($identity)

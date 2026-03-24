@@ -15,7 +15,8 @@ use OpenIDConnect\Interfaces\IdentityEntityInterface;
 use OpenIDConnect\Interfaces\IdentityRepositoryInterface;
 use OpenIDConnect\Services\IssuedByGetter;
 
-class IdTokenResponse extends BearerTokenResponse {
+class IdTokenResponse extends BearerTokenResponse
+{
     use CryptTrait;
 
     protected IdentityRepositoryInterface $identityRepository;
@@ -62,7 +63,8 @@ class IdTokenResponse extends BearerTokenResponse {
             ->relatedTo($userEntity->getIdentifier());
     }
 
-    protected function getExtraParams(AccessTokenEntityInterface $accessToken): array {
+    protected function getExtraParams(AccessTokenEntityInterface $accessToken): array
+    {
         /**
          * Include the scope return value, which according to RFC 6749, section 5.1 (and 3.3)
          * is also required if the scope doesn't match the requested scope, which it might, and is optional otherwise.
@@ -119,7 +121,8 @@ class IdTokenResponse extends BearerTokenResponse {
         return array_merge($params, ['id_token' => $token->toString()]);
     }
 
-    private function hasOpenIDScope(ScopeEntityInterface ...$scopes): bool {
+    private function hasOpenIDScope(ScopeEntityInterface ...$scopes): bool
+    {
         foreach ($scopes as $scope) {
             if ($scope->getIdentifier() === 'openid') {
                 return true;

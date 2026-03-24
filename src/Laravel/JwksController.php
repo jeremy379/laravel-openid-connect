@@ -6,7 +6,8 @@ use Laravel\Passport\Passport;
 
 class JwksController
 {
-    public function __invoke() {
+    public function __invoke()
+    {
         $publicKey = $this->getPublicKey();
 
         // Source: https://www.tuxed.net/fkooman/blog/json_web_key_set.html
@@ -34,11 +35,12 @@ class JwksController
         return response()->json($jsonData, 200, [], JSON_PRETTY_PRINT);
     }
 
-    private function getPublicKey(): string {
+    private function getPublicKey(): string
+    {
         $publicKey = str_replace('\\n', "\n", config('passport.public_key') ?? '');
 
         if (!$publicKey) {
-            $publicKey = 'file://'.Passport::keyPath('oauth-public.key');
+            $publicKey = 'file://' . Passport::keyPath('oauth-public.key');
         }
 
         return $publicKey;

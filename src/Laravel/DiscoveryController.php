@@ -15,7 +15,7 @@ class DiscoveryController
      */
     public function __invoke(Request $request, LaravelCurrentRequestService $currentRequestService)
     {
-        if(config('openid.forceHttps', true)) {
+        if (config('openid.forceHttps', true)) {
             URL::forceScheme('https'); // for route() calls below
         }
 
@@ -63,7 +63,8 @@ class DiscoveryController
      * Servers MAY choose not to advertise some supported scope values even when this parameter is used,
      * although those defined in [OpenID.Core] SHOULD be listed, if supported.
      */
-    private function getSupportedScopes(): array {
+    private function getSupportedScopes(): array
+    {
         $scopes = array_keys(config('openid.passport.tokens_can'));
 
         if (!config('openid.discovery.hide_scopes', false)) {
@@ -82,7 +83,8 @@ class DiscoveryController
         ]);
     }
 
-    private function getSupportedGrantTypes(): array {
+    private function getSupportedGrantTypes(): array
+    {
         // See PassportServiceProvider for grant types that cannot be disabled
         $grants = [
             'authorization_code', // Cannot be disabled in Passport
@@ -105,7 +107,8 @@ class DiscoveryController
      * Returns JSON array containing a list of the OAuth 2.0 response_type values that this OP supports.
      * Dynamic OpenID Providers MUST support the code, id_token, and the id_token token Response Type values.
      */
-    private function getSupportedResponseTypes(): array {
+    private function getSupportedResponseTypes(): array
+    {
         /**
          * These are always possible with Auth Code Grant
          */
