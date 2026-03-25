@@ -11,6 +11,6 @@ if (config('openid.routes.jwks', true)) {
 if (config('openid.routes.discovery', true)) {
     Route::get('/.well-known/openid-configuration', DiscoveryController::class)->name('openid.discovery');
 }
-if (config('openid.routes.userinfo', true)) {
+if (config('openid.routes.userinfo', false)) {
     Route::get('/oauth/userinfo', UserInfoController::class)->middleware('auth:api')->name('openid.userinfo');
 }
