@@ -57,8 +57,6 @@ class IdTokenCustomAudTest extends TestCase
 
         $reflection = new \ReflectionClass($idTokenResponse);
         $getExtraParams = $reflection->getMethod('getExtraParams');
-        $getExtraParams->setAccessible(true);
-
         $params = $getExtraParams->invoke($idTokenResponse, $accessToken);
 
         $this->assertArrayHasKey('id_token', $params);
